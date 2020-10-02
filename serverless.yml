@@ -1,15 +1,4 @@
-# Welcome to Serverless!
-#
-# This file is the main config file for your service.
-# It's very minimal at this point and uses default values.
-# You can always add more config options for more control.
-# We've included some commented out config examples here.
-# Just uncomment any of them to get that config option.
-#
-# For full config options, check the docs:
-#    docs.serverless.com
-#
-# Happy Coding!
+frameworkVersion: '2'
 
 service: tomenus
 # app and org for use with dashboard.serverless.com
@@ -18,11 +7,21 @@ service: tomenus
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
-frameworkVersion: '2'
+
+
+plugins:
+#  - serverless-dynamodb-local
+  - serverless-python-requirements
+  - serverless-offline
 
 provider:
   name: aws
-  runtime: python2.7
+  runtime: python3.8
+
+custom:
+  serverless-offline:
+    allowCache: false
+    useChildProcesses: true
 
 # you can overwrite defaults here
 #  stage: dev
@@ -58,8 +57,12 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  GetMenus:
+    handler: menus.controller.get_menus
+    events:
+      - http:
+          method: GET
+          path: v1/menus
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details

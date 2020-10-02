@@ -1,0 +1,15 @@
+{
+  "name": "tomenus",
+  "version": "1.0.0",
+  "description": "T.O. Menus",
+  "main": "index.js",
+  "repository": "https://github.com/NQuibin/tomenus.git",
+  "author": "Nikki Quibin",
+  "license": "MIT",
+  "private": true,
+  "devDependencies": {
+    "serverless-dynamodb-local": "^0.2.39",
+    "serverless-offline": "^6.8.0",
+    "serverless-python-requirements": "^5.1.0"
+  }
+}
