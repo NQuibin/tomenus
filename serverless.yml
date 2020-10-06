@@ -6,9 +6,28 @@ service: tomenus
 #org: your-org-name
 
 plugins:
-#  - serverless-dynamodb-local
   - serverless-python-requirements
+  - serverless-dynamodb-local
   - serverless-offline
+
+custom:
+  serverless-offline:
+    allowCache: false
+    useChildProcesses: true
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      dbPath: local/
+      migrate: true
+      seed: true
+      convertEmptyValues: true
+    seed:
+      menus:
+        sources:
+          - table: menus_${self:provider.stage}
+            sources: [./seed/menus.json]
 
 provider:
   name: aws
@@ -36,10 +55,44 @@ provider:
             - - { 'Fn::GetAtt': ['MenusTable', 'Arn' ] }
               - 'index/*'
 
-custom:
-  serverless-offline:
-    allowCache: false
-    useChildProcesses: true
+resources:
+  Resources:
+    MenusTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: menus_${self:provider.stage}
+        BillingMode: PAY_PER_REQUEST
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+          - AttributeName: name
+            AttributeType: S
+          - AttributeName: primary_category
+            AttributeType: S
+          - AttributeName: area
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+          - AttributeName: name
+            KeyType: RANGE
+        LocalSecondaryIndexes:
+          - IndexName: index_by_primary_category_${self:provider.stage}
+            Projection:
+              ProjectionType: ALL
+            KeySchema:
+              - AttributeName: id
+                KeyType: HASH
+              - AttributeName: primary_category
+                KeyType: RANGE
+          - IndexName: index_by_area_${self:provider.stage}
+            Projection:
+              ProjectionType: ALL
+            KeySchema:
+              - AttributeName: id
+                KeyType: HASH
+              - AttributeName: area
+                KeyType: RANGE
 
 # you can define service wide environment variables here
 #  environment:
@@ -61,7 +114,7 @@ functions:
       - http:
           method: GET
           path: v1/menus
-  GetMenus:
+  GetMenu:
     handler: menus.controller.get_menu
     events:
       - http:
@@ -71,42 +124,3 @@ functions:
 #    Define function environment variables here
 #    environment:
 #      variable2: value2
-
-resources:
-  Resources:
-    MenusTable:
-      Type: AWS::DynamoDB:Table
-      Properties:
-        TableName: menus_${self:provider.stage}
-        BillingMode: PAY_PER_REQUEST
-        AttributeDefinitions:
-          - AttributeName: id
-            AttributeType: S
-          - AttributeName: name
-            AttributeType: S
-          - AttributeName: type
-            AttributeType: S
-          - AttributeName: neighbourhood
-            AttributeType: S
-        KeySchema:
-          - AttributeName: id
-            KeyType: HASH
-          - AttributeName: name
-            KeyType: RANGE
-        LocalSecondaryIndexes:
-          - IndexName: index_by_type_${self:provider.stage}
-            Projection:
-              ProjectionType: ALL
-            KeySchema:
-              - AttributeName: id
-                KeyType: HASH
-              - AttributeName: type
-                KeyType: RANGE
-          - IndexName: index_by_neighbourhood_${self:provider.stage}
-            Projection:
-              ProjectionType: ALL
-            KeySchema:
-              - AttributeName: id
-                KeyType: HASH
-              - AttributeName: neighbourhood
-                KeyType: RANGE

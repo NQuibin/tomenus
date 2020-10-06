@@ -1,0 +1,20 @@
+[
+  {
+    "id": "f4fa1c25-52cc-4ec6-aec4-4a4326706c06",
+    "name": "Chris Jerk",
+    "primary_category": "Carribean",
+    "area": "Scarborough"
+  },
+  {
+    "id": "4d3875df-2b90-40c8-b361-b5ec2808a7ba",
+    "name": "QQ Thai Ice Cream",
+    "primary_category": "Ice Cream",
+    "area": "Scarborough"
+  },
+  {
+    "id": "2e5dbfb0-6d71-4f22-b647-f0c8024697a9",
+    "name": "Maker Pizza",
+    "primary_category": "Ice Cream",
+    "area": "Downtown"
+  }
+]
