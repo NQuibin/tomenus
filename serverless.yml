@@ -28,6 +28,9 @@ custom:
         sources:
           - table: menus_${self:provider.stage}
             sources: [./seed/menus.json]
+  useDynamoLocal:
+    dev: true
+    prd: false
 
 provider:
   name: aws
@@ -107,6 +110,10 @@ resources:
 #    - exclude-me.py
 #    - exclude-me-dir/**
 
+default-env: &default-env
+  ENV: ${self:provider.stage}
+  USE_DYNAMODB_LOCAL: ${self:custom.useDynamoLocal.${self:provider.stage}}
+
 functions:
   GetMenus:
     handler: menus.controller.get_menus
@@ -114,13 +121,13 @@ functions:
       - http:
           method: GET
           path: v1/menus
+    environment:
+      <<: *default-env
   GetMenu:
     handler: menus.controller.get_menu
     events:
       - http:
           method: GET
           path: v1/menus/{id}
-
-#    Define function environment variables here
-#    environment:
-#      variable2: value2
+    environment:
+      <<: *default-env

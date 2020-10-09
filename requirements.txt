@@ -5,3 +5,9 @@ mypy-extensions==0.4.3
 stringcase==1.2.0
 typing-extensions==3.7.4.3
 typing-inspect==0.6.0
+botocore==1.18.13
+jmespath==0.10.0
+pynamodb==4.3.3
+python-dateutil==2.8.1
+six==1.15.0
+urllib3==1.25.10
