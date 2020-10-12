@@ -80,19 +80,19 @@ resources:
           - AttributeName: name
             KeyType: RANGE
         GlobalSecondaryIndexes:
-          - IndexName: index_by_area_${self:provider.stage}
-            Projection:
-              ProjectionType: ALL
-            KeySchema:
-              - AttributeName: area
-                KeyType: HASH
-              - AttributeName: id
-                KeyType: RANGE
           - IndexName: index_by_primary_category_${self:provider.stage}
             Projection:
               ProjectionType: ALL
             KeySchema:
               - AttributeName: primary_category
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANGE
+          - IndexName: index_by_area_${self:provider.stage}
+            Projection:
+              ProjectionType: ALL
+            KeySchema:
+              - AttributeName: area
                 KeyType: HASH
               - AttributeName: id
                 KeyType: RANGE
@@ -129,5 +129,13 @@ functions:
       - http:
           method: GET
           path: v1/menus/{id}
+    environment:
+      <<: *default-env
+  CreateMenu:
+    handler: menus.controller.create_menu
+    events:
+      - http:
+          method: POST
+          path: v1/menus
     environment:
       <<: *default-env

@@ -1,5 +1,6 @@
 from .http_utils import Request, Response, parse_http_event, global_exception
 from .manager import MenusManager
+from .dtos import CreateMenuPayloadDTO
 from .validators import validate_uuid
 from .exceptions import InvalidMenuId
 
@@ -24,5 +25,7 @@ def get_menu(request: Request):
 
 @global_exception
 @parse_http_event
-def add_menu(_: Request):
-    return Response(status_code=500, message_body='Not implemented').to_dict()
+def create_menu(request: Request):
+    payload = CreateMenuPayloadDTO.from_dict(request.body)
+    menu = MenusManager().create_menu(payload)
+    return Response(status_code=200, message_body=menu).to_dict()

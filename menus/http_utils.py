@@ -78,7 +78,7 @@ def handle_error(e: Exception) -> Dict[str, Any]:
         logger.info('%s', e, exc_info=True)
 
     message_body = {
-        'message': getattr(e, 'message', 'Request Error')
+        'message': getattr(e, 'message', 'Something went wrong')
     }
     return Response(
         status_code=status_code,

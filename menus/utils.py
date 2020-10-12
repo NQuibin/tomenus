@@ -1,4 +1,6 @@
-from .dtos import MenuDTO, MenuItemDTO
+from uuid import uuid4
+from datetime import datetime
+from .dtos import MenuDTO, MenuItemDTO, CreateMenuPayloadDTO
 from .models import Menu
 
 
@@ -23,8 +25,19 @@ def create_menu_dto_from_model(model: Menu) -> MenuDTO:
         area=model.area,
         location=model.location,
         items=items,
-        createdAt=str(model.created_at),
-        updatedAt=str(model.updated_at)
+        created_at=model.created_at.isoformat(),
+        updated_at=model.updated_at.isoformat()
     )
 
 
+def create_menu_model_from_dto(dto: CreateMenuPayloadDTO) -> Menu:
+    return Menu(
+        id=str(uuid4()),
+        name=dto.name,
+        primary_category=dto.primary_category,
+        area=dto.area,
+        location=dto.location,
+        items=dto.items,
+        created_at=datetime.utcnow(),
+        updated_at=datetime.utcnow()
+    )

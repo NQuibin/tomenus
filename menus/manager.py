@@ -1,6 +1,7 @@
+from typing import List
 from .repository import MenusRepository
-from .dtos import MenuDTO
-from .utils import create_menu_dto_from_model
+from .dtos import MenuDTO, CreateMenuPayloadDTO
+from .utils import create_menu_dto_from_model, create_menu_model_from_dto
 
 
 class MenusManager:
@@ -11,9 +12,11 @@ class MenusManager:
         menu = self.repository.get(menu_id)
         return create_menu_dto_from_model(menu)
 
-    def get_menus(self):
+    def get_menus(self) -> List[MenuDTO]:
         menus = self.repository.get_all()
         return [create_menu_dto_from_model(menu) for menu in menus]
 
-    def add_menu(self):
-        pass
+    def create_menu(self, payload: CreateMenuPayloadDTO) -> MenuDTO:
+        menu = create_menu_model_from_dto(payload)
+        new_menu = self.repository.create(menu)
+        return create_menu_dto_from_model(new_menu)
