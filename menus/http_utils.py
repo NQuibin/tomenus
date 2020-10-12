@@ -3,15 +3,14 @@ import json
 from functools import wraps
 from typing import Callable, Tuple, Dict, Any
 from dataclasses import dataclass, is_dataclass, asdict
-from dataclasses_json import dataclass_json
+from dataclasses_json import DataClassJsonMixin
 from logging import getLogger
 
 logger = getLogger(__name__)
 
 
-@dataclass_json
 @dataclass
-class Request:
+class Request(DataClassJsonMixin):
     http_method: str
     headers: Dict[str, Any]
     path_params: Dict[str, Any]
