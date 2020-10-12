@@ -79,22 +79,22 @@ resources:
             KeyType: HASH
           - AttributeName: name
             KeyType: RANGE
-        LocalSecondaryIndexes:
-          - IndexName: index_by_primary_category_${self:provider.stage}
-            Projection:
-              ProjectionType: ALL
-            KeySchema:
-              - AttributeName: id
-                KeyType: HASH
-              - AttributeName: primary_category
-                KeyType: RANGE
+        GlobalSecondaryIndexes:
           - IndexName: index_by_area_${self:provider.stage}
             Projection:
               ProjectionType: ALL
             KeySchema:
-              - AttributeName: id
-                KeyType: HASH
               - AttributeName: area
+                KeyType: HASH
+              - AttributeName: id
+                KeyType: RANGE
+          - IndexName: index_by_primary_category_${self:provider.stage}
+            Projection:
+              ProjectionType: ALL
+            KeySchema:
+              - AttributeName: primary_category
+                KeyType: HASH
+              - AttributeName: id
                 KeyType: RANGE
 
 # you can define service wide environment variables here

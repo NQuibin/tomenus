@@ -4,6 +4,9 @@ from functools import wraps
 from typing import Callable, Tuple, Dict, Any
 from dataclasses import dataclass, is_dataclass, asdict
 from dataclasses_json import dataclass_json
+from logging import getLogger
+
+logger = getLogger(__name__)
 
 
 @dataclass_json
@@ -48,7 +51,16 @@ class Response:
             'Access-Control-Allow-Origin': access_control
         }
         self.status_code = status_code
-        self.body = asdict(message_body) if is_dataclass(message_body) else message_body
+
+        if is_dataclass(message_body):
+            self.body = asdict(message_body)
+        elif isinstance(message_body, list):
+            message_items = []
+            for item in message_body:
+                message_items.append(asdict(item) if is_dataclass(item) else item)
+            self.body = message_items
+        else:
+            self.body = message_body
 
     def to_dict(self):
         return {
@@ -56,3 +68,28 @@ class Response:
             'statusCode': self.status_code,
             'body': json.dumps(self.body if self.body else {})
         }
+
+
+def handle_error(e: Exception) -> Dict[str, Any]:
+    status_code = getattr(e, 'statusCode', 500)
+    if status_code >= 500:
+        logger.exception('handle_error: %s', e)
+    else:
+        logger.info('%s', e, exc_info=True)
+
+    message_body = {
+        'message': getattr(e, 'message', 'Request Error')
+    }
+    return Response(
+        status_code=status_code,
+        message_body=message_body
+    ).to_dict()
+
+
+def global_exception(func: Callable) -> Any:
+    def wrapper(*args: Tuple[str, Any], **kwargs: Dict[str, Any]) -> Any:
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            return handle_error(e)
+    return wrapper

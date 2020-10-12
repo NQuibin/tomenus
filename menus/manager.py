@@ -8,5 +8,12 @@ class MenusManager:
         self.repository = MenusRepository()
 
     def get_menu(self, menu_id: str) -> MenuDTO:
-        menu = self.repository.find(menu_id)
+        menu = self.repository.get(menu_id)
         return create_menu_dto_from_model(menu)
+
+    def get_menus(self):
+        menus = self.repository.get_all()
+        return [create_menu_dto_from_model(menu) for menu in menus]
+
+    def add_menu(self):
+        pass
