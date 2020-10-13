@@ -4,6 +4,16 @@ from typing import List, Optional
 
 
 @dataclass
+class MenuAddressDTO(DataClassJsonMixin):
+    address1: str
+    address2: str
+    city: str
+    province: str
+    postal_code: str
+    country: str
+
+
+@dataclass
 class MenuItemDTO(DataClassJsonMixin):
     id: str
     name: str
@@ -16,7 +26,7 @@ class MenuDTO(DataClassJsonMixin):
     name: str
     primary_category: str
     area: str
-    location: str
+    address: Optional[MenuAddressDTO] = None
     items: List[MenuItemDTO] = field(default_factory=list)
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
@@ -27,5 +37,5 @@ class CreateMenuPayloadDTO(DataClassJsonMixin):
     name: str
     primary_category: str
     area: str
-    location: str
+    address: Optional[MenuAddressDTO] = None
     items: List[MenuItemDTO] = field(default_factory=list)

@@ -3,7 +3,15 @@
     "id": "f4fa1c25-52cc-4ec6-aec4-4a4326706c06",
     "name": "Chris Jerk",
     "primary_category": "Carribean",
-    "area": "Scarborough"
+    "area": "Scarborough",
+    "address": {
+      "address1": "2570 Birchmount Rd",
+      "address2": "",
+      "city": "Toronto",
+      "province": "Ontario",
+      "postal_code": "M1T 2M5",
+      "country": "Canada"
+    }
   },
   {
     "id": "4d3875df-2b90-40c8-b361-b5ec2808a7ba",

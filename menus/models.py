@@ -13,7 +13,16 @@ from datetime import datetime
 from menus import ENV, DYNAMODB_URL
 
 
-class Item(MapAttribute):
+class MenuAddress(MapAttribute):
+    address1 = UnicodeAttribute()
+    address2 = UnicodeAttribute(null=True)
+    city = UnicodeAttribute()
+    province = UnicodeAttribute()
+    postal_code = UnicodeAttribute()
+    country = UnicodeAttribute()
+
+
+class MenuItem(MapAttribute):
     id = UnicodeAttribute(default=str(uuid4()))
     name = UnicodeAttribute()
     price = NumberAttribute(default=0)
@@ -48,8 +57,8 @@ class Menu(Model):
     name = UnicodeAttribute(range_key=True)
     primary_category = UnicodeAttribute()
     area = UnicodeAttribute()
-    location = UnicodeAttribute()
-    items = ListAttribute(of=Item, null=True)
+    address = MenuAddress(null=True)
+    items = ListAttribute(of=MenuItem, null=True)
     created_at = UTCDateTimeAttribute(default=datetime.now)
     updated_at = UTCDateTimeAttribute(default=datetime.now)
 
