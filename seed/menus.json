@@ -17,7 +17,15 @@
     "id": "4d3875df-2b90-40c8-b361-b5ec2808a7ba",
     "name": "QQ Thai Ice Cream",
     "primary_category": "Ice Cream",
-    "area": "Scarborough"
+    "area": "Scarborough",
+    "items": [
+      {
+        "id": "d3bb7272-32fd-418c-812d-d72b47a3afa7",
+        "name": "Men & Black",
+        "description": "Cookies and cream flavoured.",
+        "price": "699"
+      }
+    ]
   },
   {
     "id": "2e5dbfb0-6d71-4f22-b647-f0c8024697a9",

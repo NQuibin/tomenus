@@ -25,7 +25,8 @@ class MenuAddress(MapAttribute):
 class MenuItem(MapAttribute):
     id = UnicodeAttribute(default=str(uuid4()))
     name = UnicodeAttribute()
-    price = NumberAttribute(default=0)
+    description = UnicodeAttribute(null=True)
+    price = NumberAttribute(null=True)
 
 
 class MenusByPrimaryCategoryIndex(LocalSecondaryIndex):

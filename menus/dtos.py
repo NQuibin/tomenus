@@ -17,6 +17,7 @@ class MenuAddressDTO(DataClassJsonMixin):
 class MenuItemDTO(DataClassJsonMixin):
     id: str
     name: str
+    description: Optional[str]
     price: Optional[int]
 
 
@@ -35,7 +36,8 @@ class MenuDTO(DataClassJsonMixin):
 @dataclass
 class CreateMenuItemPayloadDTO(DataClassJsonMixin):
     name: str
-    price: Optional[int]
+    description: Optional[str] = None
+    price: Optional[int] = None
 
 
 @dataclass

@@ -1,16 +1,16 @@
 from uuid import uuid4
 from datetime import datetime
-from .dtos import (
+from menus.models import Menu, MenuItem, MenuAddress
+from menus.dtos import (
     MenuDTO,
     MenuItemDTO,
     MenuAddressDTO,
     CreateMenuPayloadDTO,
     CreateMenuItemPayloadDTO
 )
-from .models import Menu, MenuItem, MenuAddress
 
 
-def create_address_dto_from_model(model: MenuAddress) -> MenuAddressDTO:
+def menu_address_to_dto(model: MenuAddress) -> MenuAddressDTO:
     return MenuAddressDTO(
         address1=model.address1,
         address2=model.address2,
@@ -21,52 +21,65 @@ def create_address_dto_from_model(model: MenuAddress) -> MenuAddressDTO:
     )
 
 
-def create_menu_item_dto_from_model(model: MenuItem) -> MenuItemDTO:
+def menu_address_to_model(dto: MenuAddressDTO) -> MenuAddress:
+    return MenuAddress(
+        address1=dto.address1,
+        address2=dto.address2,
+        city=dto.city,
+        province=dto.province,
+        postal_code=dto.postal_code,
+        country=dto.country
+    )
+
+
+def menu_item_to_dto(model: MenuItem) -> MenuItemDTO:
     return MenuItemDTO(
         id=model.id,
         name=model.name,
+        description=model.description,
         price=model.price
     )
 
 
-def create_menu_dto_from_model(model: Menu) -> MenuDTO:
+def menu_item_to_model(dto: CreateMenuItemPayloadDTO) -> MenuItem:
+    return MenuItem(
+        id=str(uuid4()),
+        name=dto.name,
+        description=dto.description,
+        price=dto.price
+    )
+
+
+def menu_to_dto(model: Menu) -> MenuDTO:
     if model.items is None:
         items = []
     else:
-        items = [create_menu_item_dto_from_model(item) for item in model.items]
+        items = [menu_item_to_dto(item) for item in model.items]
 
     return MenuDTO(
         id=model.id,
         name=model.name,
         primary_category=model.primary_category,
         area=model.area,
-        address=create_address_dto_from_model(model.address) if model.address else None,
+        address=menu_address_to_dto(model.address) if model.address else None,
         items=items,
         created_at=model.created_at.isoformat(),
         updated_at=model.updated_at.isoformat()
     )
 
 
-def create_menu_item_model_from_dto(dto: CreateMenuItemPayloadDTO) -> MenuItem:
-    return MenuItem(
-        id=str(uuid4()),
-        name=dto.name,
-        price=dto.price
-    )
-
-
-def create_menu_model_from_dto(dto: CreateMenuPayloadDTO) -> Menu:
+def menu_to_model(dto: CreateMenuPayloadDTO) -> Menu:
     if dto.items is None:
         items = []
     else:
-        items = [create_menu_item_model_from_dto(item) for item in dto.items]
+        items = [menu_item_to_model(item) for item in dto.items]
 
     return Menu(
         id=str(uuid4()),
         name=dto.name,
         primary_category=dto.primary_category,
         area=dto.area,
-        address=dto.address,
+        address=dto.address.to_dict(),
         items=items,
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow()
