@@ -1,6 +1,12 @@
 from uuid import uuid4
 from datetime import datetime
-from .dtos import MenuDTO, MenuItemDTO, MenuAddressDTO, CreateMenuPayloadDTO
+from .dtos import (
+    MenuDTO,
+    MenuItemDTO,
+    MenuAddressDTO,
+    CreateMenuPayloadDTO,
+    CreateMenuItemPayloadDTO
+)
 from .models import Menu, MenuItem, MenuAddress
 
 
@@ -41,14 +47,27 @@ def create_menu_dto_from_model(model: Menu) -> MenuDTO:
     )
 
 
+def create_menu_item_model_from_dto(dto: CreateMenuItemPayloadDTO) -> MenuItem:
+    return MenuItem(
+        id=str(uuid4()),
+        name=dto.name,
+        price=dto.price
+    )
+
+
 def create_menu_model_from_dto(dto: CreateMenuPayloadDTO) -> Menu:
+    if dto.items is None:
+        items = []
+    else:
+        items = [create_menu_item_model_from_dto(item) for item in dto.items]
+
     return Menu(
         id=str(uuid4()),
         name=dto.name,
         primary_category=dto.primary_category,
         area=dto.area,
         address=dto.address,
-        items=dto.items,
+        items=items,
         created_at=datetime.utcnow(),
         updated_at=datetime.utcnow()
     )

@@ -33,9 +33,15 @@ class MenuDTO(DataClassJsonMixin):
 
 
 @dataclass
+class CreateMenuItemPayloadDTO(DataClassJsonMixin):
+    name: str
+    price: Optional[int]
+
+
+@dataclass
 class CreateMenuPayloadDTO(DataClassJsonMixin):
     name: str
     primary_category: str
     area: str
     address: Optional[MenuAddressDTO] = None
-    items: List[MenuItemDTO] = field(default_factory=list)
+    items: List[CreateMenuItemPayloadDTO] = field(default_factory=list)

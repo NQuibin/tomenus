@@ -16,3 +16,11 @@ class InvalidMenuId(HttpEventHandlerException):
 class MenuNotFound(HttpEventHandlerException):
     def __init__(self, menu_id: str):
         super().__init__(404, f'Menu not found: {menu_id}')
+
+
+class InvalidMenuItemPrice(HttpEventHandlerException):
+    def __init__(self, menu_name: str, price: Any):
+        super().__init__(
+            400,
+            f'Menu item price is not a positive integer: {menu_name}, {str(price)}'
+        )
