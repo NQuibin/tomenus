@@ -6,7 +6,7 @@ from pynamodb.attributes import (
     ListAttribute,
     MapAttribute
 )
-from pynamodb.indexes import LocalSecondaryIndex, AllProjection
+from pynamodb.indexes import GlobalSecondaryIndex, AllProjection
 from uuid import uuid4
 from datetime import datetime
 
@@ -29,35 +29,48 @@ class MenuItem(MapAttribute):
     price = NumberAttribute(null=True)
 
 
-class MenusByPrimaryCategoryIndex(LocalSecondaryIndex):
+class MenusByPrimaryCategoryIndex(GlobalSecondaryIndex):
     class Meta:
         index_name = f'index_by_primary_category_{ENV}'
         host = DYNAMODB_URL
         projection = AllProjection()
 
-    id = UnicodeAttribute(hash_key=True, default=str(uuid4()))
-    primary_category = UnicodeAttribute(range_key=True)
+    primary_category = UnicodeAttribute(hash_key=True)
+    name = UnicodeAttribute(range_key=True)
 
 
-class MenusByAreaIndex(LocalSecondaryIndex):
+class MenusByAreaIndex(GlobalSecondaryIndex):
     class Meta:
         index_name = f'index_by_area_{ENV}'
         host = DYNAMODB_URL
         projection = AllProjection()
 
-    id = UnicodeAttribute(hash_key=True, default=str(uuid4()))
-    area = UnicodeAttribute(range_key=True)
+    area = UnicodeAttribute(hash_key=True)
+    name = UnicodeAttribute(range_key=True)
+
+
+class MenusByStatusInxdex(GlobalSecondaryIndex):
+    class Meta:
+        index_name = f'index_by_status_{ENV}'
+        host = DYNAMODB_URL
+        projection = AllProjection()
+
+    status = UnicodeAttribute(hash_key=True)
+    name = UnicodeAttribute(range_key=True)
 
 
 class Menu(Model):
     class Meta:
         table_name = f'menus_{ENV}'
         host = DYNAMODB_URL
+        billing_mode = 'PAY_PER_REQUEST'
 
     id = UnicodeAttribute(hash_key=True, default=str(uuid4()))
     name = UnicodeAttribute(range_key=True)
     primary_category = UnicodeAttribute()
     area = UnicodeAttribute()
+    status = UnicodeAttribute()
+    description = UnicodeAttribute(null=True)
     address = MenuAddress(null=True)
     items = ListAttribute(of=MenuItem, null=True)
     created_at = UTCDateTimeAttribute(default=datetime.now)
@@ -65,3 +78,4 @@ class Menu(Model):
 
     index_by_primary_category = MenusByPrimaryCategoryIndex()
     index_by_area = MenusByAreaIndex()
+    index_by_status = MenusByStatusInxdex()

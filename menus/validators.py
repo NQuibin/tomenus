@@ -10,12 +10,12 @@ def validate_uuid(uuid: str) -> bool:
         return False
 
 
-def validate_price(price: Union[int, Any]) -> bool:
+def validate_positive_int(price: Union[int, Any]) -> bool:
     if not isinstance(price, int):
         return False
 
     try:
-        valid_price = int(price)
-        return valid_price >= 0
+        valid_int = int(price)
+        return valid_int >= 0
     except ValueError:
         return False

@@ -1,7 +1,7 @@
 import json
 
 from functools import wraps
-from typing import Callable, Tuple, Dict, Any
+from typing import Callable, Tuple, Dict, Any, Optional
 from dataclasses import dataclass, is_dataclass, asdict
 from dataclasses_json import DataClassJsonMixin
 from logging import getLogger
@@ -12,10 +12,14 @@ logger = getLogger(__name__)
 @dataclass
 class Request(DataClassJsonMixin):
     http_method: str
+    body: Any
     headers: Dict[str, Any]
     path_params: Dict[str, Any]
     query_params: Dict[str, Any]
-    body: Any
+
+    def __post_init__(self):
+        self.path_params = {} if self.path_params is None else self.path_params
+        self.query_params = {} if self.query_params is None else self.query_params
 
 
 def parse_http_event(func: Callable):
@@ -67,6 +71,10 @@ class Response:
             'statusCode': self.status_code,
             'body': json.dumps(self.body if self.body else {})
         }
+
+
+class PaginatedResponse:
+    pass
 
 
 def handle_error(e: Exception) -> Dict[str, Any]:

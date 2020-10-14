@@ -1,14 +1,25 @@
-from .http_utils import Request, Response, parse_http_event, global_exception
+from menus.utils.http_events import Request, Response, parse_http_event, global_exception
 from .manager import MenusManager
 from .dtos import CreateMenuPayloadDTO
-from .validators import validate_uuid
-from .exceptions import InvalidMenuId
+from .validators import validate_uuid, validate_positive_int
+from .exceptions import InvalidMenuId, InvalidQueryParam
 
 
 @global_exception
 @parse_http_event
-def get_menus(_: Request):
-    menus = MenusManager().get_menus()
+def get_menus(request: Request):
+    status = request.query_params.get('status', 'ACTIVE')
+    page_key = request.query_params.get('page_key')
+    page_size = request.query_params.get('page_size', '10')
+
+    if validate_positive_int(page_size):
+        raise InvalidQueryParam('page_size', 'Not a positive integer', page_size)
+
+    menus = MenusManager().get_menus(
+        status=status,
+        page_key=page_key,
+        page_size=page_size,
+    )
     return Response(status_code=200, message_body=menus).to_dict()
 
 

@@ -24,3 +24,11 @@ class InvalidMenuItemPrice(HttpEventHandlerException):
             400,
             f'Menu item price is not a positive integer: {menu_name}, {str(price)}'
         )
+
+
+class InvalidQueryParam(HttpEventHandlerException):
+    def __init__(self, query_param: str, query_param_value: Any, message: str):
+        super().__init__(
+            400,
+            f'Invalid query param - {message}: {query_param}, {query_param_value}'
+        )

@@ -17,8 +17,8 @@ class MenuAddressDTO(DataClassJsonMixin):
 class MenuItemDTO(DataClassJsonMixin):
     id: str
     name: str
-    description: Optional[str]
-    price: Optional[int]
+    description: Optional[str] = None
+    price: Optional[int] = None
 
 
 @dataclass
@@ -27,6 +27,8 @@ class MenuDTO(DataClassJsonMixin):
     name: str
     primary_category: str
     area: str
+    status: str
+    description: Optional[str] = None
     address: Optional[MenuAddressDTO] = None
     items: List[MenuItemDTO] = field(default_factory=list)
     created_at: Optional[str] = None
@@ -45,5 +47,6 @@ class CreateMenuPayloadDTO(DataClassJsonMixin):
     name: str
     primary_category: str
     area: str
+    description: Optional[str] = None
     address: Optional[MenuAddressDTO] = None
     items: List[CreateMenuItemPayloadDTO] = field(default_factory=list)

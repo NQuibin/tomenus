@@ -74,6 +74,8 @@ resources:
             AttributeType: S
           - AttributeName: area
             AttributeType: S
+          - AttributeName: status
+            AttributeType: S
         KeySchema:
           - AttributeName: id
             KeyType: HASH
@@ -86,7 +88,7 @@ resources:
             KeySchema:
               - AttributeName: primary_category
                 KeyType: HASH
-              - AttributeName: id
+              - AttributeName: name
                 KeyType: RANGE
           - IndexName: index_by_area_${self:provider.stage}
             Projection:
@@ -94,7 +96,15 @@ resources:
             KeySchema:
               - AttributeName: area
                 KeyType: HASH
-              - AttributeName: id
+              - AttributeName: name
+                KeyType: RANGE
+          - IndexName: index_by_status_${self:provider.stage}
+            Projection:
+              ProjectionType: ALL
+            KeySchema:
+              - AttributeName: status
+                KeyType: HASH
+              - AttributeName: name
                 KeyType: RANGE
 
 # you can define service wide environment variables here

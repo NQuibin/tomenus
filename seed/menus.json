@@ -4,6 +4,8 @@
     "name": "Chris Jerk",
     "primary_category": "Carribean",
     "area": "Scarborough",
+    "status": "ACTIVE",
+    "description": "A carribean restaurant serving Jerk Chicken.",
     "address": {
       "address1": "2570 Birchmount Rd",
       "address2": "",
@@ -11,13 +13,22 @@
       "province": "Ontario",
       "postal_code": "M1T 2M5",
       "country": "Canada"
-    }
+    },
+    "items": [
+      {
+        "id": "d3bb7272-32fd-418c-812d-d72b47a3afa7",
+        "name": "Jerk Chicken Entree",
+        "description": "Jerk chicken with jerk sauce.",
+        "price": "1029"
+      }
+    ]
   },
   {
     "id": "4d3875df-2b90-40c8-b361-b5ec2808a7ba",
     "name": "QQ Thai Ice Cream",
     "primary_category": "Ice Cream",
     "area": "Scarborough",
+    "status": "ACTIVE",
     "items": [
       {
         "id": "d3bb7272-32fd-418c-812d-d72b47a3afa7",
@@ -31,6 +42,7 @@
     "id": "2e5dbfb0-6d71-4f22-b647-f0c8024697a9",
     "name": "Maker Pizza",
     "primary_category": "Pizza",
-    "area": "Downtown"
+    "area": "Downtown",
+    "status": "ACTIVE"
   }
 ]

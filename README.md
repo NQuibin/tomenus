@@ -1,5 +1,10 @@
 # T.O. Menus
 
+T.O. Menus is an app that records the menus of GTA
+restaurants.
+
+This repo serves as the Backend API.
+
 ## Local Development
 **Prerequisites**
 * Install `python3.8`.
