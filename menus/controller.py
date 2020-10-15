@@ -53,3 +53,15 @@ def create_menu(request: Request):
     payload = CreateMenuPayloadDTO.from_dict(request.body)
     menu = MenusManager().create_menu(payload)
     return Response(status_code=200, message_body=menu).to_dict()
+
+
+@global_exception
+@parse_http_event
+def update_menu(_: Request):
+    return Response(status_code=501, message_body='Not implemented').to_dict()
+
+
+@global_exception
+@parse_http_event
+def delete_menu(_: Request):
+    return Response(status_code=501, message_body='Not implemented').to_dict()

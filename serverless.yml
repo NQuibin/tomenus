@@ -149,3 +149,19 @@ functions:
           path: v1/menus
     environment:
       <<: *default-env
+  UpdateMenu:
+    handler: menus.controller.update_menu
+    events:
+      - http:
+          method: PUT
+          path: v1/menus/{id}
+    environment:
+      <<: *default-env
+  DeleteMenu:
+    handler: menus.controller.delete_menu
+    events:
+      - http:
+          method: DELETE
+          path: v1/menus/{id}
+    environment:
+      <<: *default-env
