@@ -1,7 +1,7 @@
 import json
 
 from functools import wraps
-from typing import Callable, Tuple, Dict, Any, Optional
+from typing import Callable, Tuple, Dict, Any, Optional, List
 from dataclasses import dataclass, is_dataclass, asdict
 from dataclasses_json import DataClassJsonMixin
 from logging import getLogger
@@ -73,8 +73,32 @@ class Response:
         }
 
 
-class PaginatedResponse:
-    pass
+class PaginatedResponse(Response):
+    def __init__(
+        self,
+        access_control: str = '*',
+        status_code: int = 200,
+        field: str = 'data',
+        records: Optional[List[Any]] = None,
+        page_key: Optional[str] = None,
+        next_page_key: Optional[str] = None
+    ):
+        if records is None:
+            records = []
+
+        message_body = {
+            field: [asdict(record) if is_dataclass(record) else record for record in records],
+            'page': {
+                'page_size': len(records),
+                'page_key': page_key,
+                'next_page_key': next_page_key
+            }
+        }
+        super().__init__(
+            access_control=access_control,
+            status_code=status_code,
+            message_body=message_body
+        )
 
 
 def handle_error(e: Exception) -> Dict[str, Any]:
