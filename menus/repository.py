@@ -1,4 +1,4 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Dict, Any
 from .models import Menu
 from pynamodb.pagination import ResultIterator
 
@@ -34,6 +34,6 @@ class MenusRepository:
         )
         return [result for result in results], results.last_evaluated_key
 
-    def create(self, model: Menu) -> Menu:
+    def save(self, model: Menu) -> Menu:
         model.save()
         return model

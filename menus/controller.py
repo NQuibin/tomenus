@@ -7,9 +7,14 @@ from menus.utils.http_events import (
 )
 from menus.utils.dict_coder import encode_dict, decode_dict
 from .manager import MenusManager
-from .dtos import CreateMenuPayloadDTO
+from .dtos import CreateUpdateMenuPayloadDTO
 from .validators import validate_uuid, validate_positive_int
 from .exceptions import InvalidMenuId, InvalidQueryParam
+
+
+def _validate_menu_id(menu_id: str):
+    if not validate_uuid(menu_id):
+        raise InvalidMenuId(menu_id)
 
 
 @global_exception
@@ -40,8 +45,7 @@ def get_menus(request: Request):
 @parse_http_event
 def get_menu(request: Request):
     menu_id = request.path_params.get('id')
-    if not validate_uuid(menu_id):
-        raise InvalidMenuId(menu_id)
+    _validate_menu_id(menu_id)
 
     menu = MenusManager().get_menu(menu_id)
     return Response(status_code=200, message_body=menu).to_dict()
@@ -50,15 +54,21 @@ def get_menu(request: Request):
 @global_exception
 @parse_http_event
 def create_menu(request: Request):
-    payload = CreateMenuPayloadDTO.from_dict(request.body)
+    payload = CreateUpdateMenuPayloadDTO.from_dict(request.body)
     menu = MenusManager().create_menu(payload)
     return Response(status_code=200, message_body=menu).to_dict()
 
 
 @global_exception
 @parse_http_event
-def update_menu(_: Request):
-    return Response(status_code=501, message_body='Not implemented').to_dict()
+def update_menu(request: Request):
+    menu_id = request.path_params.get('id')
+    _validate_menu_id(menu_id)
+
+    payload = CreateUpdateMenuPayloadDTO.from_dict(request.body)
+
+    menu = MenusManager().update_menu(menu_id=menu_id, payload=payload)
+    return Response(status_code=200, message_body=menu).to_dict()
 
 
 @global_exception

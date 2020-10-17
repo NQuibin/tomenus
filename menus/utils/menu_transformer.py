@@ -1,11 +1,12 @@
 from uuid import uuid4
 from datetime import datetime
+from typing import Optional
 from menus.models import Menu, MenuItem, MenuAddress
 from menus.dtos import (
     MenuDTO,
     MenuItemDTO,
     MenuAddressDTO,
-    CreateMenuPayloadDTO,
+    CreateUpdateMenuPayloadDTO,
     CreateMenuItemPayloadDTO
 )
 
@@ -70,18 +71,18 @@ def menu_to_dto(model: Menu) -> MenuDTO:
     )
 
 
-def menu_to_model(dto: CreateMenuPayloadDTO) -> Menu:
+def menu_to_model(dto: CreateUpdateMenuPayloadDTO, menu_id: Optional[str] = None) -> Menu:
     if dto.items is None:
         items = []
     else:
         items = [menu_item_to_model(item) for item in dto.items]
 
     return Menu(
-        id=str(uuid4()),
+        id=menu_id or str(uuid4()),
         name=dto.name,
         primary_category=dto.primary_category,
         area=dto.area,
-        status='ACTIVE',
+        status=dto.status or 'ACTIVE',
         description=dto.description,
         address=dto.address.to_dict(),
         items=items,

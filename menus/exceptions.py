@@ -18,6 +18,11 @@ class MenuNotFound(HttpEventHandlerException):
         super().__init__(404, f'Menu not found: {menu_id}')
 
 
+class MenuToUpdateNotFound(HttpEventHandlerException):
+    def __init__(self, menu_id: str):
+        super().__init__(404, f'Menu to update not found: {menu_id}')
+
+
 class InvalidMenuItemPrice(HttpEventHandlerException):
     def __init__(self, menu_name: str, price: Any):
         super().__init__(
