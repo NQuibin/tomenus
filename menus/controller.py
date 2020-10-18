@@ -1,14 +1,14 @@
-from menus.utils.http_events import (
+from utils.http_events import (
     Request,
     Response,
     PaginatedResponse,
     parse_http_event,
     global_exception
 )
-from menus.utils.dict_coder import encode_dict, decode_dict
+from utils.dict_coder import encode_dict, decode_dict
 from .manager import MenusManager
 from .dtos import CreateUpdateMenuPayloadDTO
-from .validators import validate_uuid, validate_positive_int
+from utils.validators import validate_uuid, validate_positive_int
 from .exceptions import InvalidMenuId, InvalidQueryParam
 
 

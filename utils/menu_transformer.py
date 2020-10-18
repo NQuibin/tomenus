@@ -1,7 +1,7 @@
 from uuid import uuid4
 from datetime import datetime
 from typing import Optional
-from menus.models import Menu, MenuItem, MenuAddress
+from menus.models_al import Menu, MenuItem, MenuAddress
 from menus.dtos import (
     MenuDTO,
     MenuItemDTO,

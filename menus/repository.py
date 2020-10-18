@@ -1,5 +1,5 @@
 from typing import List, Optional, Tuple, Dict, Any
-from .models import Menu
+from .models_al import Menu
 from pynamodb.pagination import ResultIterator
 
 

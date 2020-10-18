@@ -125,6 +125,14 @@ default-env: &default-env
   USE_DYNAMODB_LOCAL: ${self:custom.useDynamoLocal.${self:provider.stage}}
 
 functions:
+  GetRestaurant:
+    handler: restaurants.controller.get_restaurant
+    events:
+      - http:
+          method: GET
+          path: v1/restaurants/{id}
+    environment:
+      <<: *default-env
   GetMenus:
     handler: menus.controller.get_menus
     events:

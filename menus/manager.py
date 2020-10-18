@@ -1,9 +1,9 @@
 from typing import List, Tuple
 from .repository import MenusRepository
 from .dtos import MenuDTO, CreateUpdateMenuPayloadDTO
-from .utils import menu_transformer
+from utils import menu_transformer
 from .exceptions import MenuNotFound, MenuToUpdateNotFound, InvalidMenuItemPrice
-from .validators import validate_positive_int
+from utils.validators import validate_positive_int
 
 
 class MenusManager:
