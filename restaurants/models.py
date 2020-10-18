@@ -1,10 +1,11 @@
 from uuid import uuid4
 
-from sqlalchemy import Column, String, Text, Integer, ForeignKey
+from sqlalchemy import Column, String, Text
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import UUIDType
 
 from db.db_api import Base
+from menus.models import Menu
 
 
 class Restaurant(Base):
@@ -22,4 +23,4 @@ class Restaurant(Base):
     postal_code = Column(String(16), nullable=True)
     country = Column(String(64), nullable=True)
 
-    menu = relationship('Menu', backref='menus')
+    menu = relationship(Menu, backref='menus', lazy='joined')

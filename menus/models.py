@@ -7,7 +7,7 @@ from db.db_api import Base
 
 
 class Menu(Base):
-    __tablename__ = 'menu'
+    __tablename__ = 'menus'
 
     id = Column(UUIDType, primary_key=True, default=uuid4)
     restaurant_id = Column(UUIDType, ForeignKey('restaurants.id'))

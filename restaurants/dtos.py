@@ -1,7 +1,9 @@
-from typing import Optional
+from typing import Optional, List
 from dataclasses import dataclass
 
 from dataclasses_json import DataClassJsonMixin
+
+from menus.dtos import MenuDTOv2
 
 
 @dataclass
@@ -17,3 +19,4 @@ class RestaurantDTO(DataClassJsonMixin):
     province: Optional[str] = None
     postal_code: Optional[str] = None
     country: Optional[str] = None
+    menu: Optional[List[MenuDTOv2]] = None

@@ -17,4 +17,4 @@ def get_restaurant(request: Request):
         raise InvalidRestaurantId(restaurant_id)
 
     restaurant = RestaurantManager().get_restaurant(restaurant_id)
-    return Response(status_code=501, message_body=restaurant).to_dict()
+    return Response(status_code=200, message_body=restaurant).to_dict()

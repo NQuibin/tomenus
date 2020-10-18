@@ -51,3 +51,15 @@ class CreateUpdateMenuPayloadDTO(DataClassJsonMixin):
     description: Optional[str] = None
     address: Optional[MenuAddressDTO] = None
     items: List[CreateMenuItemPayloadDTO] = field(default_factory=list)
+
+
+@dataclass
+class MenuDTOv2(DataClassJsonMixin):
+    id: str
+    restaurant_id: str
+    name: str
+    section: str
+    section_order: int
+    order: int
+    description: Optional[str] = None
+    price: Optional[int] = None
