@@ -1,6 +1,7 @@
 from uuid import uuid4
+from datetime import datetime
 
-from sqlalchemy import Column, String, Text
+from sqlalchemy import Column, String, Text, DateTime
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import UUIDType
 
@@ -22,5 +23,7 @@ class Restaurant(Base):
     province = Column(String(64), nullable=True)
     postal_code = Column(String(16), nullable=True)
     country = Column(String(64), nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    menu = relationship(Menu, backref='menus', lazy='joined')
+    menu = relationship(Menu, backref='menus', uselist=True, lazy='joined')

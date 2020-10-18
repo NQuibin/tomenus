@@ -133,6 +133,14 @@ functions:
           path: v1/restaurants/{id}
     environment:
       <<: *default-env
+  CreateRestaurant:
+    handler: restaurants.controller.create_restaurant
+    events:
+      - http:
+          method: POST
+          path: v1/restaurants
+    environment:
+      <<: *default-env
   GetMenus:
     handler: menus.controller.get_menus
     events:

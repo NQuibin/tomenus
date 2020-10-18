@@ -11,3 +11,8 @@ class RestaurantRepository:
             return session.query(Restaurant) \
                 .filter(Restaurant.id == restaurant_id) \
                 .first()
+
+    def create_restaurant(self, model: Restaurant) -> Restaurant:
+        with self.db.session_local(expire_on_commit=False) as session:
+            session.add(model)
+            return model

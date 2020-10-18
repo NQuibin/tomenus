@@ -2,6 +2,8 @@ from dataclasses import dataclass, field
 from dataclasses_json import DataClassJsonMixin
 from typing import List, Optional
 
+from menu_items.dtos import MenuItemDTO
+
 
 @dataclass
 class MenuAddressDTO(DataClassJsonMixin):
@@ -56,6 +58,16 @@ class CreateUpdateMenuPayloadDTO(DataClassJsonMixin):
 @dataclass
 class MenuDTOv2(DataClassJsonMixin):
     id: str
+    restaurant_id: str
+    name: str
+    description: Optional[str] = None
+    menu_items: List[MenuItemDTO] = field(default_factory=list)
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+
+
+@dataclass
+class CreateUpdateMenuPayloadDTOv2(DataClassJsonMixin):
     restaurant_id: str
     name: str
     section: str

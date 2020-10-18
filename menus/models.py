@@ -1,9 +1,12 @@
 from uuid import uuid4
+from datetime import datetime
 
-from sqlalchemy import Column, String, Text, Integer, ForeignKey
+from sqlalchemy import Column, String, Text, DateTime, ForeignKey
+from sqlalchemy.orm import relationship
 from sqlalchemy_utils import UUIDType
 
 from db.db_api import Base
+from menu_items.models import MenuItem
 
 
 class Menu(Base):
@@ -12,8 +15,8 @@ class Menu(Base):
     id = Column(UUIDType, primary_key=True, default=uuid4)
     restaurant_id = Column(UUIDType, ForeignKey('restaurants.id'))
     name = Column(String(64), nullable=False)
-    section = Column(String(128), nullable=False)
-    section_order = Column(Integer, nullable=False)
-    order = Column(Integer, nullable=False)
     description = Column(Text, nullable=True)
-    price = Column(Integer, nullable=True)
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    menu_items = relationship(MenuItem, backref='menu_items', uselist=True, lazy='joined')

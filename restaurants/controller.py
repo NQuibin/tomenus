@@ -7,6 +7,9 @@ from utils.http_events import (
 from utils.validators import validate_uuid
 from .manager import RestaurantManager
 from .exceptions import InvalidRestaurantId
+from .dtos import CreateUpdateRestaurantPayloadDTO
+
+manager = RestaurantManager()
 
 
 @global_exception
@@ -16,5 +19,13 @@ def get_restaurant(request: Request):
     if not validate_uuid(restaurant_id):
         raise InvalidRestaurantId(restaurant_id)
 
-    restaurant = RestaurantManager().get_restaurant(restaurant_id)
+    restaurant = manager.get_restaurant(restaurant_id)
+    return Response(status_code=200, message_body=restaurant).to_dict()
+
+
+@global_exception
+@parse_http_event
+def create_restaurant(request: Request):
+    payload = CreateUpdateRestaurantPayloadDTO.from_dict(request.body)
+    restaurant = manager.create_restaurant(payload)
     return Response(status_code=200, message_body=restaurant).to_dict()

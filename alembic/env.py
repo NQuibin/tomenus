@@ -12,6 +12,7 @@ sys.path.insert(0, str(path.parent))
 from db.db_api import Base
 from restaurants import models
 from menus import models
+from menu_items import models
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
