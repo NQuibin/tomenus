@@ -1,17 +1,16 @@
 from uuid import uuid4
 from typing import Optional
 
-from menus.transformer import menu_to_dto
-from menus.dtos import MenuDTOv2
+from menus.transformer import menu_to_dto, menu_to_model
 from .models import Restaurant
 from .dtos import RestaurantDTO, CreateUpdateRestaurantPayloadDTO
 
 
 def restaurant_to_dto(model: Restaurant) -> RestaurantDTO:
-    if model.menu is None:
-        menu = []
+    if model.menus is None:
+        menus = []
     else:
-        menu = [menu_to_dto(menu_model) for menu_model in model.menu]
+        menus = [menu_to_dto(menu_model) for menu_model in model.menus]
 
     return RestaurantDTO(
         id=str(model.id),
@@ -25,7 +24,9 @@ def restaurant_to_dto(model: Restaurant) -> RestaurantDTO:
         province=model.province,
         postal_code=model.postal_code,
         country=model.country,
-        menu=menu
+        menus=menus,
+        created_at=model.created_at.isoformat(),
+        updated_at=model.updated_at.isoformat()
     )
 
 
@@ -33,6 +34,11 @@ def restaurant_to_model(
     dto: CreateUpdateRestaurantPayloadDTO,
     restaurant_id: Optional[str] = None
 ) -> Restaurant:
+    if not dto.menus:
+        menus = []
+    else:
+        menus = [menu_to_model(menu) for menu in dto.menus]
+
     return Restaurant(
         id=restaurant_id or str(uuid4()),
         name=dto.name,
@@ -45,5 +51,5 @@ def restaurant_to_model(
         province=dto.province,
         postal_code=dto.postal_code,
         country=dto.country,
-        menu=[]
+        menus=menus
     )

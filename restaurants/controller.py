@@ -25,6 +25,12 @@ def get_restaurant(request: Request):
 
 @global_exception
 @parse_http_event
+def get_restaurants(_: Request):
+    return Response(status_code=200, message_body='Not implemented').to_dict()
+
+
+@global_exception
+@parse_http_event
 def create_restaurant(request: Request):
     payload = CreateUpdateRestaurantPayloadDTO.from_dict(request.body)
     restaurant = manager.create_restaurant(payload)

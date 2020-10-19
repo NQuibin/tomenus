@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 
 from dataclasses_json import DataClassJsonMixin
 
-from menus.dtos import MenuDTOv2
+from menus.dtos import MenuDTO, CreateUpdateMenuPayloadDTO
 
 
 @dataclass
@@ -19,7 +19,7 @@ class RestaurantDTO(DataClassJsonMixin):
     province: Optional[str] = None
     postal_code: Optional[str] = None
     country: Optional[str] = None
-    menu: List[MenuDTOv2] = field(default_factory=list)
+    menus: List[MenuDTO] = field(default_factory=list)
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
 
@@ -36,4 +36,4 @@ class CreateUpdateRestaurantPayloadDTO(DataClassJsonMixin):
     province: Optional[str] = None
     postal_code: Optional[str] = None
     country: Optional[str] = None
-    menu: List[MenuDTOv2] = field(default_factory=list)
+    menus: List[CreateUpdateMenuPayloadDTO] = field(default_factory=list)

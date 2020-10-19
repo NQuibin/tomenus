@@ -16,3 +16,13 @@ class MenuItemDTO(DataClassJsonMixin):
     price: Optional[int] = None
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
+
+
+@dataclass
+class CreateUpdateMenuItemPayloadDTO(DataClassJsonMixin):
+    name: str
+    section: str
+    section_order: int
+    order: int
+    description: Optional[str] = None
+    price: Optional[int] = None

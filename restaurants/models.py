@@ -26,4 +26,4 @@ class Restaurant(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    menu = relationship(Menu, backref='menus', uselist=True, lazy='joined')
+    menus = relationship(Menu, backref='menus', uselist=True, lazy='joined')
