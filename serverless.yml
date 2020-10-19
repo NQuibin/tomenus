@@ -42,6 +42,12 @@ functions:
       - http:
           method: GET
           path: v1/restaurants/{id}
+  GetRestaurants:
+    handler: restaurants.controller.get_restaurants
+    events:
+      - http:
+          method: GET
+          path: v1/restaurants
   CreateRestaurant:
     handler: restaurants.controller.create_restaurant
     events:

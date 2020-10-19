@@ -1,6 +1,7 @@
 from utils.http_events import (
     Request,
     Response,
+    PaginatedResponse,
     parse_http_event,
     global_exception
 )
@@ -25,8 +26,19 @@ def get_restaurant(request: Request):
 
 @global_exception
 @parse_http_event
-def get_restaurants(_: Request):
-    return Response(status_code=200, message_body='Not implemented').to_dict()
+def get_restaurants(request: Request):
+    page_key = request.query_params.get('page_key')
+    page_size = request.query_params.get('page_size')
+
+    restaurants, next_page_key = manager.get_restaurants(page_key=page_key, page_size=page_size)
+
+    return PaginatedResponse(
+        status_code=200,
+        field='restaurants',
+        records=restaurants,
+        page_key=page_key,
+        next_page_key=next_page_key
+    ).to_dict()
 
 
 @global_exception
