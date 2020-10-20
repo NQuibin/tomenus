@@ -1,10 +1,13 @@
-from utils.http_events import (
+from werkzeug.http import parse_options_header
+
+from utils.http.events import (
     Request,
     Response,
     PaginatedResponse,
     parse_http_event,
     global_exception
 )
+from utils.http.constants import PREFER_HEADER_RETURN_MINIMAL
 from utils.validators import validate_uuid
 from .manager import RestaurantManager
 from .exceptions import InvalidRestaurantId
@@ -20,7 +23,10 @@ def get_restaurant(request: Request):
     if not validate_uuid(restaurant_id):
         raise InvalidRestaurantId(restaurant_id)
 
-    restaurant = manager.get_restaurant(restaurant_id)
+    prefer_header = parse_options_header(request.headers.get('Prefer'))
+    is_minimal = prefer_header[0] == PREFER_HEADER_RETURN_MINIMAL
+
+    restaurant = manager.get_restaurant(restaurant_id=restaurant_id, is_minimal=is_minimal)
     return Response(status_code=200, message_body=restaurant).to_dict()
 
 

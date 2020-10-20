@@ -19,9 +19,13 @@ class RestaurantDTO(DataClassJsonMixin):
     province: Optional[str] = None
     postal_code: Optional[str] = None
     country: Optional[str] = None
-    menus: List[MenuDTO] = field(default_factory=list)
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
+
+
+@dataclass
+class RestaurantDTOFull(RestaurantDTO, DataClassJsonMixin):
+    menus: List[MenuDTO] = field(default_factory=list)
 
 
 @dataclass

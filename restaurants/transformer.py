@@ -1,33 +1,35 @@
 from uuid import uuid4
-from typing import Optional
+from typing import Optional, Union
 
 from menus.transformer import menu_to_dto, menu_to_model
 from .models import Restaurant
-from .dtos import RestaurantDTO, CreateUpdateRestaurantPayloadDTO
+from .dtos import RestaurantDTO, RestaurantDTOFull, CreateUpdateRestaurantPayloadDTO
 
 
-def restaurant_to_dto(model: Restaurant) -> RestaurantDTO:
-    if model.menus is None:
-        menus = []
-    else:
-        menus = [menu_to_dto(menu_model) for menu_model in model.menus]
+def restaurant_to_dto(model: Restaurant, is_minimal: bool = False) -> Union[RestaurantDTO, RestaurantDTOFull]:
+    menus = [] \
+        if model.menus is None or is_minimal \
+        else [menu_to_dto(menu_model) for menu_model in model.menus]
 
-    return RestaurantDTO(
-        id=str(model.id),
-        name=model.name,
-        primary_category=model.primary_category,
-        area=model.area,
-        description=model.description,
-        address1=model.address1,
-        address2=model.address2,
-        city=model.city,
-        province=model.province,
-        postal_code=model.postal_code,
-        country=model.country,
-        menus=menus,
-        created_at=model.created_at.isoformat(),
-        updated_at=model.updated_at.isoformat()
-    )
+    args = {
+        'id': str(model.id),
+        'name': model.name,
+        'primary_category': model.primary_category,
+        'area': model.area,
+        'description': model.description,
+        'address1': model.address1,
+        'address2': model.address2,
+        'city': model.city,
+        'province': model.province,
+        'postal_code': model.postal_code,
+        'country': model.country,
+        'created_at': model.created_at.isoformat(),
+        'updated_at': model.updated_at.isoformat()
+    }
+    if not is_minimal:
+        args['menus'] = menus
+
+    return RestaurantDTO(**args) if is_minimal else RestaurantDTOFull(**args)
 
 
 def restaurant_to_model(

@@ -10,11 +10,11 @@ class RestaurantManager:
     def __init__(self):
         self.repository = RestaurantRepository()
 
-    def get_restaurant(self, restaurant_id: str) -> RestaurantDTO:
+    def get_restaurant(self, restaurant_id: str, is_minimal: bool = False) -> RestaurantDTO:
         restaurant = self.repository.get_restaurant(restaurant_id)
         if restaurant is None:
             raise RestaurantNotFound(restaurant_id)
-        return restaurant_to_dto(restaurant)
+        return restaurant_to_dto(model=restaurant, is_minimal=is_minimal)
 
     def get_restaurants(
         self,
