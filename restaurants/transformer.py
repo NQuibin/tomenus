@@ -6,9 +6,9 @@ from .models import Restaurant
 from .dtos import RestaurantDTO, RestaurantDTOFull, CreateUpdateRestaurantPayloadDTO
 
 
-def restaurant_to_dto(model: Restaurant, is_minimal: bool = False) -> Union[RestaurantDTO, RestaurantDTOFull]:
+def restaurant_to_dto(model: Restaurant, full: bool = False) -> Union[RestaurantDTO, RestaurantDTOFull]:
     menus = [] \
-        if model.menus is None or is_minimal \
+        if not full or model.menus is None \
         else [menu_to_dto(menu_model) for menu_model in model.menus]
 
     args = {
@@ -26,21 +26,16 @@ def restaurant_to_dto(model: Restaurant, is_minimal: bool = False) -> Union[Rest
         'created_at': model.created_at.isoformat(),
         'updated_at': model.updated_at.isoformat()
     }
-    if not is_minimal:
+    if full:
         args['menus'] = menus
 
-    return RestaurantDTO(**args) if is_minimal else RestaurantDTOFull(**args)
+    return RestaurantDTOFull(**args) if full else RestaurantDTO(**args)
 
 
 def restaurant_to_model(
     dto: CreateUpdateRestaurantPayloadDTO,
     restaurant_id: Optional[str] = None
 ) -> Restaurant:
-    if not dto.menus:
-        menus = []
-    else:
-        menus = [menu_to_model(menu) for menu in dto.menus]
-
     return Restaurant(
         id=restaurant_id or str(uuid4()),
         name=dto.name,
@@ -52,6 +47,5 @@ def restaurant_to_model(
         city=dto.city,
         province=dto.province,
         postal_code=dto.postal_code,
-        country=dto.country,
-        menus=menus
+        country=dto.country
     )
