@@ -32,3 +32,12 @@ class RestaurantManager:
         restaurant = restaurant_to_model(payload)
         new_restaurant = self.repository.create_restaurant(restaurant)
         return restaurant_to_dto(new_restaurant)
+
+    def update_restaurant(
+        self,
+        restaurant_id: str,
+        payload: CreateUpdateRestaurantPayloadDTO
+    ) -> RestaurantDTO:
+        restaurant = restaurant_to_model(dto=payload, restaurant_id=restaurant_id)
+        updated_restaurant = self.repository.update_restaurant(restaurant)
+        return restaurant_to_dto(updated_restaurant)

@@ -13,6 +13,12 @@ custom:
   serverless-offline:
     allowCache: false
     useChildProcesses: true
+  dbHost:
+    dev: localhost
+  dbUsername:
+    dev: tomenusdev
+  dbPassword:
+    dev: tomenus123123
 
 provider:
   name: aws
@@ -22,6 +28,12 @@ provider:
   memorySize: 512
   environment:
     ENV: ${self:provider.stage}
+    DB_HOST: ${self:custom.dbHost.${self:provider.stage}}
+    DB_NAME: ${self:custom.dbUsername.${self:provider.stage}}
+    DB_USERNAME: ${self:custom.dbUsername.${self:provider.stage}}
+    DB_PASSWORD: ${self:custom.dbPassword.${self:provider.stage}}
+    DB_PORT: 5432
+
 
 #resources:
 #  Resources:
@@ -41,7 +53,7 @@ functions:
     events:
       - http:
           method: GET
-          path: v1/restaurants/{id}
+          path: v1/restaurants/{restaurant_id}
   GetRestaurants:
     handler: restaurants.controller.get_restaurants
     events:
@@ -54,3 +66,9 @@ functions:
       - http:
           method: POST
           path: v1/restaurants
+  UpdateRestaurant:
+    handler: restaurants.controller.update_restaurant
+    events:
+      - http:
+          method: PUT
+          path: v1/restaurants/{restaurant_id}

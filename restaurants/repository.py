@@ -35,3 +35,7 @@ class RestaurantRepository:
         with self.db.session_local(expire_on_commit=False) as session:
             session.add(model)
             return model
+
+    def update_restaurant(self, model: Restaurant) -> Restaurant:
+        with self.db.session_local(expire_on_commit=False) as session:
+            return session.merge(model)

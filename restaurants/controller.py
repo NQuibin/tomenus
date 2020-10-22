@@ -17,16 +17,16 @@ manager = RestaurantManager()
 @global_exception
 @parse_http_event
 def get_restaurant(request: Request):
-    restaurant_id = request.path_params.get('id')
-    full = request.query_params.get('full', 'false')
+    restaurant_id = request.path_params.get('restaurant_id')
     if not validate_uuid(restaurant_id):
         raise InvalidRestaurantId(restaurant_id)
+
+    full = request.query_params.get('full', 'false')
 
     restaurant = manager.get_restaurant(
         restaurant_id=restaurant_id,
         full=full.lower() == 'true'
     )
-
     return Response(status_code=200, message_body=restaurant).to_dict()
 
 
@@ -42,7 +42,6 @@ def get_restaurants(request: Request):
         page_size=page_size,
         full=full.lower() == 'true'
     )
-
     return PaginatedResponse(
         status_code=200,
         field='restaurants',
@@ -57,4 +56,17 @@ def get_restaurants(request: Request):
 def create_restaurant(request: Request):
     payload = CreateUpdateRestaurantPayloadDTO.from_dict(request.body)
     restaurant = manager.create_restaurant(payload)
+    return Response(status_code=200, message_body=restaurant).to_dict()
+
+
+@global_exception
+@parse_http_event
+def update_restaurant(request: Request):
+    restaurant_id = request.path_params.get('restaurant_id')
+    if not validate_uuid(restaurant_id):
+        raise InvalidRestaurantId(restaurant_id)
+
+    payload = CreateUpdateRestaurantPayloadDTO.from_dict(request.body)
+
+    restaurant = manager.update_restaurant(restaurant_id=restaurant_id, payload=payload)
     return Response(status_code=200, message_body=restaurant).to_dict()
