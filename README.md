@@ -27,14 +27,11 @@ This repo serves as the Backend API.
     ```
     source venv/bin/activate
     ```
-5. Install `DynamoDB Local`
+5. Run `PostgreSQL` through docker:
     ```
-   sls dynamodb install
+   docker-compose up
     ```
-   __*Note:*__ For reference we use
-   [sls-dynamodb-local](https://www.npmjs.com/package/serverless-dynamodb-local)
-   plugin. Use `sls dynamodb remove` if installation fails and try again.
-6. Start `serverless`.
+6. Start `serverless`:
     ```
-   sls offline start
+   sls offline
     ```
