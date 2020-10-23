@@ -78,3 +78,15 @@ functions:
       - http:
           method: GET
           path: v1/menus/{menu_id}
+  GetMenus:
+    handler: menus.controller.get_menus
+    events:
+      - http:
+          method: GET
+          path: v1/menus
+  CreateMenu:
+    handler: menus.controller.create_menu
+    events:
+      - http:
+          method: POST
+          path: v1/menus
