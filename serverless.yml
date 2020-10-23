@@ -72,3 +72,9 @@ functions:
       - http:
           method: PUT
           path: v1/restaurants/{restaurant_id}
+  GetMenu:
+    handler: menus.controller.get_menu
+    events:
+      - http:
+          method: GET
+          path: v1/menus/{menu_id}

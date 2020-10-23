@@ -6,7 +6,6 @@ from sqlalchemy.orm import relationship
 from sqlalchemy_utils import UUIDType
 
 from db.db_api import Base
-from menus.models import Menu
 
 
 class Restaurant(Base):
@@ -26,4 +25,4 @@ class Restaurant(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    menus = relationship(Menu, backref='menus', uselist=True, lazy='joined')
+    menus = relationship('Menu', backref='menus', uselist=True, lazy='joined')

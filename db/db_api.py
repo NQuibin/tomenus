@@ -18,6 +18,11 @@ meta = MetaData(naming_convention={
 
 Base = declarative_base(metadata=meta)
 
+# import models to prevent circular dependencies
+from restaurants.models import Restaurant
+from menus.models import Menu
+from menu_items.models import MenuItem
+
 
 def get_database_url(db_dialect: str = None, db_user: str = None, db_password: str = None, db_host: str = None, db_name: str = None, db_port: str = None) -> str:
     db_dialect = db_dialect or os.getenv('DB_DIALECT', 'postgresql')

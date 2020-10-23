@@ -1,8 +1,8 @@
-from typing import List, Optional
+from typing import List, Optional, Union
 
 from .repository import RestaurantRepository
 from .transformer import restaurant_to_dto, restaurant_to_model
-from .dtos import RestaurantDTO, CreateUpdateRestaurantPayloadDTO
+from .dtos import RestaurantDTO, RestaurantDTOFull, CreateUpdateRestaurantPayloadDTO
 from .exceptions import RestaurantNotFound
 
 
@@ -10,7 +10,7 @@ class RestaurantManager:
     def __init__(self):
         self.repository = RestaurantRepository()
 
-    def get_restaurant(self, restaurant_id: str, full: bool = False) -> RestaurantDTO:
+    def get_restaurant(self, restaurant_id: str, full: bool = False) -> Union[RestaurantDTO, RestaurantDTOFull]:
         restaurant = self.repository.get_restaurant(restaurant_id)
         if restaurant is None:
             raise RestaurantNotFound(restaurant_id)
@@ -21,7 +21,7 @@ class RestaurantManager:
         page_key: str,
         page_size: str,
         full: bool = False
-    ) -> (List[RestaurantDTO], Optional[str]):
+    ) -> (List[Union[RestaurantDTO, RestaurantDTOFull]], Optional[str]):
         restaurants, next_page_key = self.repository.get_restaurants(
             page_key=int(page_key),
             page_size=int(page_size)

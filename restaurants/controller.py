@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from utils.http_events import (
     Request,
     Response,
@@ -5,7 +7,6 @@ from utils.http_events import (
     parse_http_event,
     global_exception
 )
-
 from utils.validators import validate_uuid
 from .manager import RestaurantManager
 from .exceptions import InvalidRestaurantId
@@ -32,7 +33,7 @@ def get_restaurant(request: Request):
 
 @global_exception
 @parse_http_event
-def get_restaurants(request: Request):
+def get_restaurants(request: Request) -> Dict[str, Any]:
     page_key = request.query_params.get('page_key', '1')
     page_size = request.query_params.get('page_size', '10')
     full = request.query_params.get('full', 'false')
@@ -53,7 +54,7 @@ def get_restaurants(request: Request):
 
 @global_exception
 @parse_http_event
-def create_restaurant(request: Request):
+def create_restaurant(request: Request) -> Dict[str, Any]:
     payload = CreateUpdateRestaurantPayloadDTO.from_dict(request.body)
     restaurant = manager.create_restaurant(payload)
     return Response(status_code=200, message_body=restaurant).to_dict()
@@ -61,7 +62,7 @@ def create_restaurant(request: Request):
 
 @global_exception
 @parse_http_event
-def update_restaurant(request: Request):
+def update_restaurant(request: Request) -> Dict[str, Any]:
     restaurant_id = request.path_params.get('restaurant_id')
     if not validate_uuid(restaurant_id):
         raise InvalidRestaurantId(restaurant_id)

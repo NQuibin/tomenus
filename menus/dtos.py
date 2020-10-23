@@ -11,9 +11,13 @@ class MenuDTO(DataClassJsonMixin):
     restaurant_id: str
     name: str
     description: Optional[str] = None
-    menu_items: List[MenuItemDTO] = field(default_factory=list)
     created_at: Optional[str] = None
     updated_at: Optional[str] = None
+
+
+@dataclass
+class MenuDTOFull(MenuDTO, DataClassJsonMixin):
+    menu_items: List[MenuItemDTO] = field(default_factory=list)
 
 
 @dataclass

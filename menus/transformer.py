@@ -1,40 +1,37 @@
-from typing import Optional
+from typing import Optional, Union
 from uuid import uuid4
 
-from menu_items.transformer import menu_item_to_dto, menu_item_to_model
+from menu_items.transformer import menu_item_to_dto
 from .models import Menu
-from .dtos import MenuDTO, CreateUpdateMenuPayloadDTO
+from .dtos import MenuDTO, MenuDTOFull, CreateUpdateMenuPayloadDTO
 
 
-def menu_to_dto(model: Menu) -> MenuDTO:
-    if model.menu_items is None:
-        menu_items = []
-    else:
-        menu_items = [menu_item_to_dto(menu_item) for menu_item in model.menu_items]
+def menu_to_dto(model: Menu, full: bool = False) -> Union[MenuDTO, MenuDTOFull]:
+    args = {
+        'id': str(model.id),
+        'restaurant_id': str(model.id),
+        'name': model.name,
+        'description': model.description,
+        'created_at': model.created_at.isoformat(),
+        'updated_at': model.updated_at.isoformat()
+    }
 
-    return MenuDTO(
-        id=str(model.id),
-        restaurant_id=str(model.restaurant_id),
-        name=model.name,
-        description=model.description,
-        menu_items=menu_items,
-        created_at=model.created_at.isoformat(),
-        updated_at=model.updated_at.isoformat()
-    )
+    if full:
+        args['menu_items'] = [] \
+            if model.menu_items is None \
+            else [menu_item_to_dto(menu_item_model) for menu_item_model in model.menu_items]
+
+        return MenuDTOFull(**args)
+
+    return MenuDTO(**args)
 
 
 def menu_to_model(
     dto: CreateUpdateMenuPayloadDTO,
     menu_id: Optional[str] = None
 ) -> Menu:
-    if not dto.menu_items:
-        menu_items = []
-    else:
-        menu_items = [menu_item_to_model(menu_item) for menu_item in dto.menu_items]
-
     return Menu(
         id=menu_id or str(uuid4()),
         name=dto.name,
-        description=dto.description,
-        menu_items=menu_items
+        description=dto.description
     )

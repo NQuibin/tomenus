@@ -7,10 +7,6 @@ from .dtos import RestaurantDTO, RestaurantDTOFull, CreateUpdateRestaurantPayloa
 
 
 def restaurant_to_dto(model: Restaurant, full: bool = False) -> Union[RestaurantDTO, RestaurantDTOFull]:
-    menus = [] \
-        if not full or model.menus is None \
-        else [menu_to_dto(menu_model) for menu_model in model.menus]
-
     args = {
         'id': str(model.id),
         'name': model.name,
@@ -26,10 +22,15 @@ def restaurant_to_dto(model: Restaurant, full: bool = False) -> Union[Restaurant
         'created_at': model.created_at.isoformat(),
         'updated_at': model.updated_at.isoformat()
     }
-    if full:
-        args['menus'] = menus
 
-    return RestaurantDTOFull(**args) if full else RestaurantDTO(**args)
+    if full:
+        args['menus'] = [] \
+            if model.menus is None \
+            else [menu_to_dto(menu_model) for menu_model in model.menus]
+
+        return RestaurantDTOFull(**args)
+
+    return RestaurantDTO(**args)
 
 
 def restaurant_to_model(
