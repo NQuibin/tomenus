@@ -5,10 +5,10 @@ from sqlalchemy import Column, String, Text, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
 from sqlalchemy_utils import UUIDType
 
-from db.db_api import Base
+from db.db_api import BaseModel
 
 
-class Menu(Base):
+class Menu(BaseModel):
     __tablename__ = 'menus'
 
     id = Column(UUIDType, primary_key=True, default=uuid4)

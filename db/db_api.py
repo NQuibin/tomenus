@@ -16,7 +16,7 @@ meta = MetaData(naming_convention={
     "pk": "%(table_name)s_pkey"
 })
 
-Base = declarative_base(metadata=meta)
+BaseModel = declarative_base(metadata=meta)
 
 # import models to prevent circular dependencies
 from restaurants.models import Restaurant

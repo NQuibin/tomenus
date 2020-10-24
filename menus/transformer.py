@@ -32,6 +32,7 @@ def menu_to_model(
 ) -> Menu:
     return Menu(
         id=menu_id or str(uuid4()),
+        restaurant_id=dto.restaurant_id,
         name=dto.name,
         description=dto.description
     )

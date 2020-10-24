@@ -4,10 +4,10 @@ from uuid import uuid4
 from sqlalchemy import Column, String, Text, Integer, DateTime, ForeignKey
 from sqlalchemy_utils import UUIDType
 
-from db.db_api import Base
+from db.db_api import BaseModel
 
 
-class MenuItem(Base):
+class MenuItem(BaseModel):
     __tablename__ = 'menu_items'
 
     id = Column(UUIDType, primary_key=True, default=uuid4)

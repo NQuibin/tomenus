@@ -22,6 +22,7 @@ class MenuDTOFull(MenuDTO, DataClassJsonMixin):
 
 @dataclass
 class CreateUpdateMenuPayloadDTO(DataClassJsonMixin):
+    restaurant_id: str
     name: str
     description: Optional[str] = None
     price: Optional[int] = None

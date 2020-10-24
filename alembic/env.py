@@ -7,9 +7,10 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 
+# import models for autogeneration
 path = Path(getcwd())
 sys.path.insert(0, str(path.parent))
-from db.db_api import Base
+from db.db_api import BaseModel
 from restaurants import models
 from menus import models
 from menu_items import models
@@ -34,7 +35,7 @@ fileConfig(config.config_file_name)
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = Base.metadata
+target_metadata = BaseModel.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
