@@ -24,7 +24,7 @@ def get_menu(request: Request) -> Dict[str, Any]:
 
     full = request.query_params.get('full', 'false')
 
-    menu = MenuManager().get_menu(menu_id=menu_id, full=full.lower() == 'true')
+    menu = manager.get_menu(menu_id=menu_id, full=full.lower() == 'true')
     return Response(status_code=200, message_body=menu).to_dict()
 
 

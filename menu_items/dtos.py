@@ -21,6 +21,7 @@ class MenuItemDTO(DataClassJsonMixin):
 @dataclass
 class CreateUpdateMenuItemPayloadDTO(DataClassJsonMixin):
     name: str
+    menu_id: str
     section: str
     section_order: int
     order: int

@@ -1,4 +1,4 @@
-from typing import Union
+from typing import Union, List, Optional
 
 from .repository import MenuRepository
 from .dtos import MenuDTO, MenuDTOFull, CreateUpdateMenuPayloadDTO
@@ -16,7 +16,12 @@ class MenuManager:
             raise MenuNotFound(menu_id)
         return menu_to_dto(model=menu, full=full)
 
-    def get_menus(self, page_key: str, page_size: str, full: bool = False):
+    def get_menus(
+        self,
+        page_key: str,
+        page_size: str,
+        full: bool = False
+    ) -> (List[Union[MenuDTO, MenuDTOFull]], Optional[str]):
         menus, next_page_key = self.repository.get_menus(
             page_key=int(page_key),
             page_size=int(page_size)
@@ -28,7 +33,7 @@ class MenuManager:
         new_menu = self.repository.create_menu(menu)
         return menu_to_dto(new_menu)
 
-    def update_menu(self, menu_id: str, payload: CreateUpdateMenuPayloadDTO):
+    def update_menu(self, menu_id: str, payload: CreateUpdateMenuPayloadDTO) -> MenuDTO:
         menu = menu_to_model(dto=payload, menu_id=menu_id)
         updated_menu = self.repository.update(menu)
         return menu_to_dto(updated_menu)

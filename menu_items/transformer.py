@@ -26,6 +26,7 @@ def menu_item_to_model(
 ) -> MenuItem:
     return MenuItem(
         id=menu_item_id or str(uuid4()),
+        menu_id=dto.menu_id,
         name=dto.name,
         section=dto.section,
         section_order=dto.section_order,
