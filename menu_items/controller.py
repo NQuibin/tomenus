@@ -1,13 +1,13 @@
 from typing import Dict, Any
 
-from utils.http_events import (
+from shared.http_events import (
     Request,
     Response,
     PaginatedResponse,
     parse_http_event,
     global_exception
 )
-from utils.validators import validate_uuid
+from shared.validators import validate_uuid
 from .exceptions import InvalidMenuItemId
 from .manager import MenuItemManager
 from .dtos import CreateUpdateMenuItemPayloadDTO

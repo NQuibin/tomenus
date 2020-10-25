@@ -1,4 +1,4 @@
-from utils.exceptions import HttpEventHandlerException
+from shared.exceptions import HttpEventHandlerException
 
 
 class InvalidMenuId(HttpEventHandlerException):
