@@ -1,13 +1,13 @@
-from uuid import UUID
 from typing import Union, Any
+from bson.objectid import ObjectId
 
 
-def validate_uuid(uuid: str) -> bool:
-    try:
-        UUID(uuid)
-        return True
-    except ValueError:
-        return False
+def validate_uuid(oid: str) -> bool:
+    return ObjectId.is_valid(oid)
+
+
+def validate_oid(oid: str) -> bool:
+    return ObjectId.is_valid(oid)
 
 
 def validate_positive_int(price: Union[int, Any]) -> bool:

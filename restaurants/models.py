@@ -1,28 +1,24 @@
-from uuid import uuid4
 from datetime import datetime
 
-from sqlalchemy import Column, String, Text, DateTime
-from sqlalchemy.orm import relationship
-from sqlalchemy_utils import UUIDType
-
-from db.db_api import BaseModel
+from mongoengine import Document, StringField, DateTimeField, ReferenceField
 
 
-class Restaurant(BaseModel):
-    __tablename__ = 'restaurants'
+class Address(Document):
+    address1 = StringField(required=True)
+    address2 = StringField(max_length=64)
+    city = StringField(required=True, max_length=64)
+    province = StringField(required=True, max_length=64)
+    code = StringField(required=True, max_length=16)
+    country = StringField(required=True, max_length=64)
+    created_at = DateTimeField(default=datetime.utcnow)
+    updated_at = DateTimeField(default=datetime.utcnow)
 
-    id = Column(UUIDType, primary_key=True, default=uuid4)
-    name = Column(String(128), nullable=False)
-    primary_category = Column(String(128), nullable=False)
-    area = Column(String(64), nullable=False)
-    description = Column(Text, nullable=True)
-    address1 = Column(String(128), nullable=True)
-    address2 = Column(String(28), nullable=True)
-    city = Column(String(128), nullable=True)
-    province = Column(String(64), nullable=True)
-    postal_code = Column(String(16), nullable=True)
-    country = Column(String(64), nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
-    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
-    menus = relationship('Menu', backref='menus', uselist=True, lazy='joined')
+class Restaurant(Document):
+    name = StringField(required=True)
+    primary_category = StringField(required=True)
+    status = StringField(required=True)
+    description = StringField()
+    address = ReferenceField(Address, db_field='address_id')
+    created_at = DateTimeField(default=datetime.utcnow)
+    updated_at = DateTimeField(default=datetime.utcnow)

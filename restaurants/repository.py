@@ -1,9 +1,15 @@
-from typing import List, Optional
+from db import establish_connection
 
-from db import DbApi, BaseRepository
 from .models import Restaurant
 
 
-class RestaurantRepository(BaseRepository):
+class RestaurantRepository:
     def __init__(self):
-        super().__init__(DbApi())
+        establish_connection()
+
+    def save(self, model: Restaurant) -> Restaurant:
+        model.address.save()
+        return model.save(cascade=True)
+
+    def get(self, restaurant_id: str) -> Restaurant:
+        return Restaurant.objects.get(id=restaurant_id)

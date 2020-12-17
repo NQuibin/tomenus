@@ -1,52 +1,58 @@
-from uuid import uuid4
-from typing import Optional, Union
+from typing import Optional
 
-from menus.transformer import menu_to_dto, menu_to_model
-from .models import Restaurant
-from .dtos import RestaurantDTO, RestaurantDTOFull, CreateUpdateRestaurantPayloadDTO
+from .models import Restaurant, Address
+from .dtos import (
+    RestaurantDTO,
+    AddressDTO,
+    CreateUpdateRestaurantPayloadDTO,
+    CreateUpdateAddressPayloadDTO
+)
 
 
-def restaurant_to_dto(model: Restaurant, full: bool = False) -> Union[RestaurantDTO, RestaurantDTOFull]:
+def address_to_dto(model: Address) -> AddressDTO:
+    return AddressDTO(
+        id=str(model.id),
+        address1=model.address1,
+        address2=model.address2,
+        city=model.city,
+        province=model.province,
+        code=model.code,
+        country=model.country,
+        created_at=model.created_at.isoformat(),
+        updated_at=model.updated_at.isoformat()
+    )
+
+
+def restaurant_to_dto(model: Restaurant) -> RestaurantDTO:
     args = {
         'id': str(model.id),
         'name': model.name,
         'primary_category': model.primary_category,
-        'area': model.area,
+        'status': model.status,
         'description': model.description,
-        'address1': model.address1,
-        'address2': model.address2,
-        'city': model.city,
-        'province': model.province,
-        'postal_code': model.postal_code,
-        'country': model.country,
+        'address': address_to_dto(model.address),
         'created_at': model.created_at.isoformat(),
         'updated_at': model.updated_at.isoformat()
     }
-
-    if full:
-        args['menus'] = [] \
-            if model.menus is None \
-            else [menu_to_dto(menu_model) for menu_model in model.menus]
-
-        return RestaurantDTOFull(**args)
-
     return RestaurantDTO(**args)
 
 
-def restaurant_to_model(
-    dto: CreateUpdateRestaurantPayloadDTO,
-    restaurant_id: Optional[str] = None
-) -> Restaurant:
-    return Restaurant(
-        id=restaurant_id or str(uuid4()),
-        name=dto.name,
-        primary_category=dto.primary_category,
-        area=dto.area,
-        description=dto.description,
+def address_to_model(dto: CreateUpdateAddressPayloadDTO) -> Address:
+    return Address(
         address1=dto.address1,
         address2=dto.address2,
         city=dto.city,
         province=dto.province,
-        postal_code=dto.postal_code,
+        code=dto.code,
         country=dto.country
+    )
+
+
+def restaurant_to_model(dto: CreateUpdateRestaurantPayloadDTO) -> Restaurant:
+    return Restaurant(
+        name=dto.name,
+        status=dto.status,
+        primary_category=dto.primary_category,
+        description=dto.description,
+        address=address_to_model(dto.address)
     )

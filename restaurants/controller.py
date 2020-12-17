@@ -7,9 +7,9 @@ from shared.http_events import (
     parse_http_event,
     global_exception
 )
-from shared.validators import validate_uuid
+from shared.validators import validate_uuid, validate_oid
 from .manager import RestaurantManager
-from .exceptions import InvalidRestaurantId
+from .exceptions import InvalidRestaurantId, RestaurantNotFound
 from .dtos import CreateUpdateRestaurantPayloadDTO
 
 manager = RestaurantManager()
@@ -17,17 +17,23 @@ manager = RestaurantManager()
 
 @global_exception
 @parse_http_event
+def create_restaurant(request: Request) -> Dict[str, Any]:
+    payload = CreateUpdateRestaurantPayloadDTO.from_dict(request.body)
+    restaurant = manager.create_restaurant(payload)
+    return Response(status_code=200, message_body=restaurant).to_dict()
+
+
+@global_exception
+@parse_http_event
 def get_restaurant(request: Request):
     restaurant_id = request.path_params.get('restaurant_id')
-    if not validate_uuid(restaurant_id):
+    if not validate_oid(restaurant_id):
         raise InvalidRestaurantId(restaurant_id)
 
-    full = request.query_params.get('full', 'false')
+    restaurant = manager.get_restaurant(restaurant_id)
+    if restaurant is None:
+        raise RestaurantNotFound(restaurant_id)
 
-    restaurant = manager.get_restaurant(
-        restaurant_id=restaurant_id,
-        full=full.lower() == 'true'
-    )
     return Response(status_code=200, message_body=restaurant).to_dict()
 
 
@@ -50,14 +56,6 @@ def get_restaurants(request: Request) -> Dict[str, Any]:
         page_key=page_key,
         next_page_key=next_page_key
     ).to_dict()
-
-
-@global_exception
-@parse_http_event
-def create_restaurant(request: Request) -> Dict[str, Any]:
-    payload = CreateUpdateRestaurantPayloadDTO.from_dict(request.body)
-    restaurant = manager.create_restaurant(payload)
-    return Response(status_code=200, message_body=restaurant).to_dict()
 
 
 @global_exception

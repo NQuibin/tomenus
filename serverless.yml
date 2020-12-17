@@ -16,7 +16,7 @@ custom:
   dbHost:
     dev: localhost
   dbUsername:
-    dev: tomenusdev
+    dev: tomenus
   dbPassword:
     dev: tomenus123123
 
@@ -29,10 +29,10 @@ provider:
   environment:
     ENV: ${self:provider.stage}
     DB_HOST: ${self:custom.dbHost.${self:provider.stage}}
-    DB_NAME: ${self:custom.dbUsername.${self:provider.stage}}
+    DB_NAME: tomenusdev
     DB_USERNAME: ${self:custom.dbUsername.${self:provider.stage}}
     DB_PASSWORD: ${self:custom.dbPassword.${self:provider.stage}}
-    DB_PORT: 5432
+    DB_PORT: 27017
 
 
 #resources:
@@ -72,51 +72,3 @@ functions:
       - http:
           method: PUT
           path: v1/restaurants/{restaurant_id}
-  GetMenu:
-    handler: menus.controller.get_menu
-    events:
-      - http:
-          method: GET
-          path: v1/menus/{menu_id}
-  GetMenus:
-    handler: menus.controller.get_menus
-    events:
-      - http:
-          method: GET
-          path: v1/menus
-  CreateMenu:
-    handler: menus.controller.create_menu
-    events:
-      - http:
-          method: POST
-          path: v1/menus
-  UpdateMenu:
-    handler: menus.controller.update_menu
-    events:
-      - http:
-          method: PUT
-          path: v1/menus/{menu_id}
-  GetMenuItem:
-    handler: menu_items.controller.get_menu_item
-    events:
-      - http:
-          method: GET
-          path: v1/menu_items/{menu_item_id}
-  GetMenuItems:
-    handler: menu_items.controller.get_menu_items
-    events:
-      - http:
-          method: GET
-          path: v1/menu_items
-  CreateMenuItem:
-    handler: menu_items.controller.create_menu_item
-    events:
-      - http:
-          method: POST
-          path: v1/menu_items
-  UpdateMenuItem:
-    handler: menu_items.controller.update_menu_item
-    events:
-      - http:
-          method: PUT
-          path: v1/menu_items/{menu_item_id}

@@ -1,17 +1,14 @@
-version: '3.6'
+version: '3.7'
 
 services:
-  db:
-    environment:
-      POSTGRES_USER: ${DB_USERNAME}
-      POSTGRES_PASSWORD: ${DB_PASSWORD}
-      POSTGRES_DB: ${DB_NAME}
-    image: postgres:12.4-alpine
-    networks:
-      - default
-    ports:
-      - 127.0.0.1:5432:5432
+  mongodb:
+    container_name: mongodb_dev
+    image: mongo:4.4.1
     restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: tomenus
+      MONGO_INITDB_ROOT_PASSWORD: tomenus123123
+    ports:
+      - '27017:27017'
     volumes:
-      - ./local/postgres-data:/var/lib/postgresql/data
-    command: ["postgres", "-c", "log_statement=all", "-c", "logging_collector=on", "-c", "log_directory=pg_logs", "-c", "log_filename=postgresql-%Y-%m-%d_%H%M%S.log"]
+      - ./local/db:/data/db
